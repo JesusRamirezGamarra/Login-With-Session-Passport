@@ -44,7 +44,7 @@ footer{
 }
 
 .jumbotron{
-    background-color: darkslateblue;
+    background-color: darkkhaki;
     color: #FFFFFF;
     text-align: center;
 }
@@ -96,10 +96,16 @@ button {
     left: -30px;
    }
    
-   button:active:before {
+   /* button:active:before {
     background: darkslateblue;
     transition: background 0s;
+   } */
+
+   button:active:before {
+    background: black;
+    transition: background 0s;
    }
+
 
    img{
     /* width: 100%;

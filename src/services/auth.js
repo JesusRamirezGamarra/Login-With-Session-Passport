@@ -1,6 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { UserModel } from "../model/user.js";
+import { isValidPassword } from "../utils.js";
 
 const strategyOptions = {
   usernameField: "username",
@@ -8,14 +9,19 @@ const strategyOptions = {
   passReqToCallback: true,
 };
 
-const login = async (req, username, password, done) => {
-  console.log('LOGIN!!');
-  const user = await UserModel.findOne({username})
+const login = async (req,username, password, done) => {
 
-  if (!user || !user.isValidPassword(password)) return done(null, false);
+        console.log('LOGIN!!');
+        // const user = await UserModel.findOne({username:'luciojesusramirezgamarra@gmail.com'});
+        const user = await UserModel.findOne({username});
 
-  console.log('ENCONTRE UN USUARIO');
-  return done(null, user);
+        // if (!user || !user.isValidPassword(password)) return done(null, false);
+        // console.log('ENCONTRE UN USUARIO');
+        // return done(null, user);
+
+        if(!user) return done(null,false,{message:"Incorrect credentials"})
+        if(!isValidPassword(user,password)) return done(null,false,{message:"Incorrect password"});
+        return done(null,user);        
 }
 
 const signup = async (req, username, password, done) => {

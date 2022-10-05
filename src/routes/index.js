@@ -8,8 +8,8 @@ const passportOptions = { badRequestMessage: "falta username / password" };
 
 //Middleware
 const isLoggedIn = (req, res, next) => {
-console.log('Is Authenticated')
-console.log(req.isAuthenticated())
+// console.log('Is Authenticated')
+// console.log(req.isAuthenticated())
   if(!req.isAuthenticated()) { 
     res.redirect('/login') 
   }else{
@@ -24,16 +24,16 @@ router.get('/signup', (req, res) => {
 });
 //SIGN UP
 router.post('/signup', (req, res, next) => {
-  passport.authenticate('signup', passportOptions, (err, user, info) => {
-    console.log('Info SIGNUP');
-    console.log(err, user, info);
-    if (err) {
-      return next(err);
-    }
-    if (!user) return res.render('register-error')
-
-    res.render('usuarioCreado')
-  })(req, res, next);
+  passport.authenticate('signup',
+      passportOptions, (err, user, info) => {
+          console.log('Info SIGNUP');
+          console.log(err, user, info);
+          if (err) {
+            return next(err);
+          }
+          if (!user) return res.render('register-error')
+          res.render('usuarioCreado')
+      })(req, res, next);
 });
 
 /* --------- LOGIN ---------- */
@@ -42,14 +42,19 @@ router.get('/login', (req, res) => {
 })
 /* --------- LOGIN-Error---------- */
 router.get('/login-error', (req, res) => {
+  console.log(`router.get('/login-error'`);
   res.render('login-error')
 });
 //LOGIN
 router.post('/login',
-  passport.authenticate('login',{failureRedirect: '/login-error', failureMessage: true}),
-  (req, res) => {
-     res.redirect('/datos')
-  },
+            passport.authenticate('login',{
+              failureRedirect: '/login-error', 
+              failureMessage: true
+            }),
+            async(req, res) => {
+              console.log('antes de redirect a /datos')
+              res.redirect('/datos')
+            },
 )
 
 /* --------- DATOS ---------- */
